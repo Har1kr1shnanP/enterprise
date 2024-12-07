@@ -1,62 +1,51 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+name: SencareAppTech 
 
-name: Build and deploy Node.js app to Azure Web App - SencareAppTech
+ 
 
 on:
+
   push:
+
     branches:
+
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
+
+  build-and-deploy:
+
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
+      - name: Checkout source
+
+        uses: actions/checkout@v3
+
+ 
+
+      - name: setup the Node.js version
+
+        uses: actions/setup-node@v4
+
         with:
+
           node-version: '18.x'
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+      - name: Install dependencies
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: npm install
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+ 
+
+      - name: Deploy to Azure App Service
+
+        uses: azure/webapps-deploy@v2
+
         with:
-          name: node-app
-          path: release.zip
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: node-app
+          app-name: SencareAppTech 
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'SencareAppTech'
-          slot-name: 'Production'
+          publish-profile: ${{  secrets.AZURE_WEBAPP_PUBLISH_PROFILE}}
+
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83F4C9E040C34EA8B372083B33FA5560 }}
