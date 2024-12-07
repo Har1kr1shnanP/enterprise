@@ -15,7 +15,9 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: ["https://sencareapptech-hheqaycehmegc2cf.canadacentral-01.azurewebsites.net"]
+}));
 
 // Swagger configuration
 const swaggerDefinition = {
@@ -27,7 +29,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: `http://localhost:${process.env.PORT || 5000}`,
+            url: "https://sencareapptech-hheqaycehmegc2cf.canadacentral-01.azurewebsites.net",
         },
     ],
 };
