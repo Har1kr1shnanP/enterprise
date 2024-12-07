@@ -36,7 +36,7 @@ const swaggerDefinition = {
 
 const options = {
     swaggerDefinition,
-    apis: ["./routes/*.js"], // Path to the API routes
+    apis: ["./routes/*.js","./controller/*.js"], // Path to the API routes
 };
 
 // Generate Swagger specification
